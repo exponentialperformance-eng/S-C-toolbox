@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>S&amp;C Toolbox</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#14181f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="S&amp;C Tools">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#14181f;--mut:#667085;--ac:#e8590c;--acx:#fff;--bd:#d8dce3;--ok:#2b8a3e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#1a1d24;--tx:#eef0f4;--mut:#9aa3b2;--bd:#2d323d;--ok:#51cf66}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#1a1d24;--tx:#eef0f4;--mut:#9aa3b2;--bd:#2d323d;--ok:#51cf66}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 4px;max-width:640px;margin:0 auto}
+h1{font-size:20px;margin:0;letter-spacing:.5px}h1 span{color:var(--ac)}
+#hb{display:none;padding:8px 12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;font-weight:700;font-size:15px}
+main{padding:8px 12px 110px;max-width:640px;margin:0 auto}
+main>section{display:none}main>section.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+label{display:block;font-size:13px;color:var(--mut);margin:8px 0 3px}
+input,select,textarea{width:100%;padding:12px;font-size:18px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font-family:inherit}
+textarea{font-size:16px}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
+.btn{padding:14px;border:0;border-radius:12px;background:var(--ac);color:var(--acx);font-size:17px;font-weight:700;width:100%}
+.btn.g{background:var(--bd);color:var(--tx)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{padding:16px 8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:14px;font-size:16px;font-weight:700}
+.tile span{display:block;font-size:26px}
+.big{font-size:40px;font-weight:800;color:var(--ac);line-height:1.1}
+.res{font-size:15px;color:var(--mut)}.res b{color:var(--tx)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;text-align:center}
+th,td{border:1px solid var(--bd);padding:8px 4px}th{background:var(--bg)}
+td.k{font-weight:700;background:var(--bg)}td.c{cursor:pointer}td.sel{background:var(--ac);color:var(--acx);font-weight:700}
+.clock{font-size:64px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}
+.ph{text-align:center;font-weight:700;letter-spacing:2px;color:var(--mut);text-transform:uppercase;min-height:1.4em}
+.note{font-size:12px;color:var(--mut);margin-top:8px}
+.nt{border-top:1px solid var(--bd);padding:8px 0;font-size:15px;white-space:pre-wrap}
+.nt small{color:var(--mut);display:block;cursor:pointer}
+#bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;justify-content:space-between;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--bd);z-index:20}
+.mb{display:flex;gap:6px;align-items:center;font-weight:700;font-variant-numeric:tabular-nums;cursor:pointer}
+#bar button{padding:10px 12px;border:0;border-radius:10px;background:var(--ac);color:var(--acx);font-weight:700;font-size:15px}
+#bar #bN{background:var(--bd);color:var(--tx)}
+#dr{position:fixed;left:0;right:0;bottom:0;max-height:78vh;overflow:auto;background:var(--card);border-top:3px solid var(--ac);border-radius:16px 16px 0 0;padding:12px 14px calc(14px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .25s;z-index:30}
+#dr.on{transform:none}#dr .max{max-width:640px;margin:0 auto}
+#ts{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:#222;color:#fff;padding:8px 14px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .2s;z-index:40;pointer-events:none}
+</style></head><body>
+<header><h1>S&amp;C <span>TOOLBOX</span></h1><button id="hb">← Home</button></header>
+<main>
+
+<section id="home" class="on">
+<div class="card">
+<div class="row"><div><label>Newtons (N)</label><input id="cN" type="number" inputmode="decimal"></div><div><label>Kilograms (kg)</label><input id="cK" type="number" inputmode="decimal"></div></div>
+<div class="row"><div><label>Pounds (lb)</label><input id="cL" type="number" inputmode="decimal"></div><div><label>g (m/s²)</label><select id="cG"><option value="9.81">9.81</option><option value="9.80665">9.80665</option></select></div></div>
+<p class="note">Type in any box and the other two update live.</p></div>
+<div class="card"><b>Left + right force</b>
+<div class="row"><div><label>Left (N)</label><input id="lN" type="number" inputmode="decimal"></div><div><label>Right (N)</label><input id="rN" type="number" inputmode="decimal"></div></div>
+<div class="big" id="lT" style="margin-top:10px">–</div><div class="res" id="lD">Total load in kg</div></div>
+<div class="grid">
+<button class="tile" data-go="orm"><span>🏋️</span>1RM</button>
+<button class="tile" data-go="rpe"><span>📊</span>RPE / RIR</button>
+<button class="tile" data-go="iso"><span>🦵</span>Iso Belt Squat</button>
+<button class="tile" data-go="tmr"><span>⏱️</span>Timer</button>
+<button class="tile" data-go="met"><span>🎵</span>Metronome</button>
+<button class="tile" data-go="pct"><span>➗</span>% Calc</button>
+<button class="tile" data-go="nts"><span>📝</span>Notes</button></div></section>
+
+<section id="orm"><div class="card">
+<div class="row"><div><label>Load</label><input id="oW" type="number" inputmode="decimal"></div><div><label>Reps</label><input id="oR" type="number" inputmode="numeric" min="1" max="30"></div></div>
+<label>Unit</label><select id="oU"><option>kg</option><option>lb</option></select>
+<div class="big" id="oA" style="margin-top:12px">–</div><div class="res" id="oD">Average estimated 1RM</div>
+<div class="row" id="oB" style="margin-top:10px;display:none"><button class="btn" id="oS">Send to RPE chart</button><button class="btn g" id="oN">+ Stamp to note</button></div>
+</div><div class="card scroll"><table id="oT"></table></div></section>
+
+<section id="rpe"><div class="card">
+<div class="row"><div><label>e1RM</label><input id="rM" type="number" inputmode="decimal"></div><div><label>Unit</label><select id="rU"><option>kg</option><option>lb</option></select></div><div><label>Round to</label><select id="rRd"><option>0.5</option><option selected>1</option><option>2.5</option><option>5</option></select></div></div>
+<p class="note">Enter an e1RM (or send one from the 1RM tab) to fill the chart with loads. Tap any cell to copy it.</p></div>
+<div class="card scroll"><table id="rT"></table></div>
+<div class="card" id="rS" style="display:none"><div id="rX" style="font-weight:700;margin-bottom:8px"></div><div class="row"><button class="btn g" id="rC">Copy</button><button class="btn" id="rN">+ Stamp to note</button></div></div>
+<p class="note">Chart shows % of 1RM by reps and RPE. RIR = 10 − RPE. A general guide; individuals and lifts vary.</p></section>
+
+<section id="tmr"><div class="card">
+<div class="ph" id="tPh">Ready</div><div class="clock" id="tC">00:00</div><div class="ph" id="tRd"></div>
+<label>Mode</label><select id="tM"><option value="int">Intervals (work / rest)</option><option value="sw">Stopwatch</option></select>
+<div id="tI"><div class="row"><div><label>Work (s)</label><input id="tW" type="number" value="30"></div><div><label>Rest (s)</label><input id="tRs" type="number" value="30"></div><div><label>Rounds</label><input id="tN" type="number" value="1"></div></div></div>
+<div class="row" style="margin-top:12px"><button class="btn" id="tGo">Start</button><button class="btn g" id="tRst">Reset</button></div>
+<p class="note">Rest 0 and rounds 1 gives a simple countdown. Keeps running while you use other tools. Beeps at 3-2-1 and at phase changes.</p></div></section>
+
+<section id="met"><div class="card">
+<div class="ph" id="mPh" style="font-size:24px"></div>
+<div class="clock" id="mB">120</div><div class="ph">BPM</div>
+<input type="range" id="mS" min="30" max="240" value="120" style="padding:0">
+<div class="row" style="margin-top:8px"><button class="btn g" id="mDn">−5</button><button class="btn g" id="mUp">+5</button></div>
+<label>Mode</label><select id="mMd"><option value="click">Click</option><option value="tempo">Tempo (lower–hold–lift–top)</option></select>
+<div id="mCl"><label>Beats per bar (accent on 1, 0 = none)</label><select id="mBr"><option>0</option><option>2</option><option>3</option><option selected>4</option></select></div>
+<div id="mTp" style="display:none"><label>Preset</label><select id="mPr"><option>3-1-1-0</option><option>4-0-1-0</option><option>2-0-2-0</option><option>3-1-1-1</option><option>5-0-1-0</option><option>1-0-1-0</option><option>custom</option></select>
+<div class="row"><div><label>Lower</label><input id="mE" type="number" min="0" value="3"></div><div><label>Hold</label><input id="mP1" type="number" min="0" value="1"></div><div><label>Lift</label><input id="mC" type="number" min="0" value="1"></div><div><label>Top</label><input id="mP2" type="number" min="0" value="0"></div></div>
+<p class="note">Each count = one beat. Distinct pitch and vibration per phase (vibration works on Android; iOS ignores it). At 60 BPM a count is 1 s.</p></div>
+<button class="btn" id="mGo" style="margin-top:12px">Start</button></div></section>
+
+<section id="iso"><div class="card">
+<div class="row"><div><label>A: Body mass (kg)</label><input id="iA" type="number" inputmode="decimal"></div><div><label>B: Body mass + belt (kg)</label><input id="iB" type="number" inputmode="decimal"></div></div>
+<div class="row"><div><label>C: Peak force (N)</label><input id="iC" type="number" inputmode="decimal"></div><div><label>D: Peak force (kg)</label><input id="iD" type="number" inputmode="decimal"></div></div>
+<p class="note">Enter C or D and the other fills in using the g setting on the home screen.</p>
+<details style="margin-top:8px"><summary class="res">Optional: paste a force trace to find the peak</summary>
+<textarea id="iF" rows="3" placeholder="Values separated by commas, spaces or new lines" style="margin-top:8px"></textarea>
+<div class="row" style="margin-top:8px"><select id="iU"><option>N</option><option>kg</option></select><button class="btn g" id="iFg">Use peak</button></div></details></div>
+<div class="card" id="iR"></div>
+<p class="note">E = D − B (peak force in kg minus body mass + belt). F = E ÷ A.</p></section>
+
+<section id="pct">
+<div class="card"><b>What is x% of Y?</b><div class="row"><div><label>x (%)</label><input id="p1x" type="number" inputmode="decimal"></div><div><label>Y</label><input id="p1y" type="number" inputmode="decimal"></div></div><div class="big" id="p1r" style="margin-top:10px">–</div></div>
+<div class="card"><b>X is what % of Y?</b><div class="row"><div><label>X</label><input id="p2x" type="number" inputmode="decimal"></div><div><label>Y</label><input id="p2y" type="number" inputmode="decimal"></div></div><div class="big" id="p2r" style="margin-top:10px">–</div></div>
+<div class="card"><b>% change from X to Y</b><div class="row"><div><label>X (start)</label><input id="p3x" type="number" inputmode="decimal"></div><div><label>Y (end)</label><input id="p3y" type="number" inputmode="decimal"></div></div><div class="big" id="p3r" style="margin-top:10px">–</div><div class="res" id="p3d"></div></div></section>
+<section id="nts"><div class="card"><p class="res">Notes live in the slide-up drawer so you can open them from any tool.</p><button class="btn" id="nO">Open notes</button></div></section>
+</main>
+
+<div id="bar">
+<div class="mb"><span id="bC">00:00</span><button id="bT">▶</button></div>
+<div class="mb"><span id="bB">♩ 120</span><button id="bM">▶</button></div>
+<button id="bN">✎ Notes</button></div>
+
+<div id="dr"><div class="max">
+<div class="row" style="align-items:center"><b>Floor notes</b><button class="btn g" id="nX" style="width:auto;flex:0 0 auto;padding:8px 14px">Close</button></div>
+<textarea id="nI" rows="4" placeholder="Active note: cues, rack heights, results…" style="margin-top:8px"></textarea>
+<div class="row" style="margin-top:8px"><button class="btn" id="nA">Save note</button><button class="btn g" id="nS">+ Time</button><button class="btn g" id="nC">Clear all</button></div>
+<div id="nL" style="margin-top:10px"></div></div></div>
+<div id="ts"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const r=(x,d=1)=>Math.round(x*10**d)/10**d;
+const g=()=>parseFloat($("cG").value)||9.81;
+const tm=()=>new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"});
+function toast(m){const t=$("ts");t.textContent=m;t.style.opacity=1;clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.opacity=0,1600)}
+function show(id){document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("on",s.id===id));$("hb").style.display=id==="home"?"none":"block";window.scrollTo(0,0)}
+function dr(o){$("dr").classList.toggle("on",o)}
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>b.dataset.go==="nts"?dr(true):show(b.dataset.go));
+$("hb").onclick=()=>show("home");$("bN").onclick=()=>dr(!$("dr").classList.contains("on"));$("nX").onclick=()=>dr(false);$("nO").onclick=()=>dr(true);
+$("bC").onclick=()=>show("tmr");$("bB").onclick=()=>show("met");
+/* notes */
+let notes=[];try{notes=JSON.parse(localStorage.getItem("sc_notes")||"[]");$("nI").value=localStorage.getItem("sc_draft")||""}catch(e){}
+const sv=()=>{try{localStorage.setItem("sc_notes",JSON.stringify(notes));localStorage.setItem("sc_draft",$("nI").value)}catch(e){}};
+function stamp(x){const el=$("nI");el.value+=(el.value&&!el.value.endsWith("\n")?"\n":"")+tm()+" - "+x;sv();toast("Added to note")}
+$("nI").oninput=sv;$("nS").onclick=()=>{const el=$("nI");el.value+=(el.value?"\n":"")+tm()+" - ";sv();el.focus()};
+function rn(){const L=$("nL");L.innerHTML=notes.length?"":"<span class='res'>No saved notes yet.</span>";notes.forEach((n,i)=>{const d=document.createElement("div");d.className="nt";const s=document.createElement("small");s.textContent=n.t+"  ✕ delete";s.onclick=()=>{notes.splice(i,1);sv();rn()};d.appendChild(s);d.appendChild(document.createTextNode(n.x));L.appendChild(d)})}
+$("nA").onclick=()=>{const x=$("nI").value.trim();if(!x)return;notes.unshift({x,t:new Date().toLocaleString([], {dateStyle:"short",timeStyle:"short"})});$("nI").value="";sv();rn();toast("Saved")};
+$("nC").onclick=()=>{if(notes.length&&confirm("Delete all saved notes?")){notes=[];sv();rn()}};rn();
+/* converter */
+function conv(src){const v=parseFloat($(src).value);if(isNaN(v)){["cN","cK","cL"].forEach(i=>i!==src&&($(i).value=""));return}
+const kg=src==="cK"?v:src==="cL"?v/2.2046226:v/g();
+if(src!=="cN")$("cN").value=r(kg*g(),2);if(src!=="cK")$("cK").value=r(kg,2);if(src!=="cL")$("cL").value=r(kg*2.2046226,2)}
+["cN","cK","cL"].forEach(i=>{$(i).oninput=()=>conv(i);$(i).onfocus=()=>$(i).select()});$("cG").onchange=()=>conv("cK");
+/* left + right */
+function lr(){const L=parseFloat($("lN").value),R=parseFloat($("rN").value);
+if(isNaN(L)&&isNaN(R)){$("lT").textContent="–";$("lD").textContent="Total load in kg";return}
+const l=isNaN(L)?0:L,rr=isNaN(R)?0:R,t=l+rr;$("lT").textContent=r(t/g(),1)+" kg";
+$("lD").innerHTML="Total <b>"+r(t,1)+" N</b> · L "+r(l/g(),1)+" kg · R "+r(rr/g(),1)+" kg"+(t>0?" · split <b>"+r(l/t*100,1)+" / "+r(rr/t*100,1)+"</b>":"")}
+["lN","rN"].forEach(i=>{$(i).oninput=lr;$(i).onfocus=()=>$(i).select()});$("cG").addEventListener("change",lr);
+/* 1RM */
+let LO=null;
+function orm(){const w=parseFloat($("oW").value),n=parseInt($("oR").value);if(!w||!n||n<1){$("oA").textContent="–";$("oT").innerHTML="";$("oB").style.display="none";return}
+const u=$("oU").value;const f={Epley:w*(1+n/30),Brzycki:n<37?w*36/(37-n):NaN,Lombardi:w*Math.pow(n,.1),Mayhew:w*100/(52.2+41.9*Math.exp(-.055*n)),Wathan:w*100/(48.8+53.8*Math.exp(-.075*n))};
+if(n===1)for(const k in f)f[k]=w;const vals=Object.values(f).filter(x=>!isNaN(x));const a=vals.reduce((p,c)=>p+c,0)/vals.length;
+LO={a,u,w,n};$("oB").style.display="flex";
+$("oA").textContent=r(a)+" "+u;$("oD").innerHTML=Object.entries(f).map(([k,v])=>k+" <b>"+r(v)+"</b>").join(" · ");
+let h="<tr><th>%</th><th>Load</th><th>%</th><th>Load</th></tr>";const ps=[100,95,90,85,80,75,70,65,60,55,50,45];
+for(let i=0;i<ps.length;i+=2)h+="<tr><td class='k'>"+ps[i]+"</td><td>"+r(a*ps[i]/100)+"</td><td class='k'>"+ps[i+1]+"</td><td>"+r(a*ps[i+1]/100)+"</td></tr>";$("oT").innerHTML=h}
+["oW","oR","oU"].forEach(i=>$(i).oninput=orm);
+$("oN").onclick=()=>LO&&stamp("1RM est: "+r(LO.a)+" "+LO.u+" ("+LO.w+" x "+LO.n+")");
+$("oS").onclick=()=>{if(!LO)return;$("rM").value=r(LO.a);$("rU").value=LO.u;rt();show("rpe")};
+/* RPE */
+const RP=[10,9.5,9,8.5,8,7.5,7,6.5],CH=[[100,95,92,89,86,84,81,79,76,74],[98,94,91,88,85,83,80,78,75,73],[96,92,89,86,84,81,79,76,74,71],[94,91,88,85,82,80,77,75,72,70],[92,89,86,84,81,79,76,74,71,68],[91,88,85,82,80,77,75,72,70,67],[89,86,84,81,79,76,74,71,68,65],[88,85,82,80,77,75,72,70,67,64]];
+let SEL=null;
+function ld(i,j){const M=parseFloat($("rM").value),rd=+$("rRd").value;return M?r(Math.round(M*CH[i][j]/100/rd)*rd,2):null}
+function rt(){let h="<tr><th>RPE</th><th>RIR</th>"+[...Array(10)].map((_,i)=>"<th>"+(i+1)+"</th>").join("")+"</tr>";
+RP.forEach((p,i)=>{h+="<tr><td class='k'>"+p+"</td><td class='k'>"+(10-p)+"</td>"+CH[i].map((x,j)=>{const l=ld(i,j);return "<td class='c"+(SEL&&SEL[0]===i&&SEL[1]===j?" sel":"")+"' data-i='"+i+"' data-j='"+j+"'>"+(l===null?x+"%":l)+"</td>"}).join("")+"</tr>"});$("rT").innerHTML=h;if(SEL)pick(SEL[0],SEL[1],false)}
+function pick(i,j,cp){SEL=[i,j];const l=ld(i,j),u=$("rU").value,p=RP[i];const lt=l===null?CH[i][j]+"%":l+" "+u;
+$("rX").textContent=(j+1)+" @ RPE "+p+" ("+(10-p)+" RIR): "+lt;$("rS").style.display="block";
+document.querySelectorAll("#rT td.c").forEach(c=>c.classList.toggle("sel",+c.dataset.i===i&&+c.dataset.j===j));
+if(cp)cpy(lt)}
+function cpy(t){try{navigator.clipboard.writeText(t).then(()=>toast("Copied "+t),()=>toast("Copy blocked, use + note"))}catch(e){toast("Copy blocked, use + note")}}
+$("rT").onclick=e=>{const c=e.target.closest("td.c");if(c)pick(+c.dataset.i,+c.dataset.j,true)};
+$("rC").onclick=()=>cpy($("rX").textContent);$("rN").onclick=()=>stamp($("rX").textContent);
+["rM","rU","rRd"].forEach(i=>$(i).oninput=rt);rt();
+/* audio */
+let AC;function ac(){if(!AC)try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}if(AC&&AC.state==="suspended")AC.resume();return AC}
+function beep(f=880,d=.12,t,v=.4){const a=ac();if(!a)return;const o=a.createOscillator(),gn=a.createGain();o.frequency.value=f;o.connect(gn);gn.connect(a.destination);t=t||a.currentTime;gn.gain.setValueAtTime(v,t);gn.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d)}
+/* timer */
+let T={run:false,iv:null,el:0,ph:"work",rd:1,left:0};
+const fmt=s=>{s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")};
+const ck=t=>{$("tC").textContent=t;$("bC").textContent=t};
+const tl=t=>{$("tGo").textContent=t;$("bT").textContent=t==="Pause"?"⏸":"▶"};
+function tReset(){clearInterval(T.iv);T.run=false;T.el=0;T.ph="work";T.rd=1;T.left=0;tl("Start");$("tPh").textContent="Ready";$("tRd").textContent="";ck($("tM").value==="sw"?"00:00":fmt(+$("tW").value))}
+$("tM").onchange=()=>{$("tI").style.display=$("tM").value==="sw"?"none":"block";tReset()};["tW","tRs","tN"].forEach(i=>$(i).oninput=tReset);
+$("tRst").onclick=tReset;$("bT").onclick=()=>$("tGo").click();
+$("tGo").onclick=()=>{ac();if(T.run){T.run=false;clearInterval(T.iv);tl("Resume");return}
+T.run=true;tl("Pause");const sw=$("tM").value==="sw";
+if(!sw&&T.left<=0){T.left=+$("tW").value||1;T.ph="work";T.rd=1}
+T.last=performance.now();T.iv=setInterval(()=>{const n=performance.now(),d=(n-T.last)/1000;T.last=n;
+if(sw){T.el+=d;ck(fmt(Math.floor(T.el)));$("tPh").textContent="Running";return}
+const pl=Math.ceil(T.left);T.left-=d;const cl=Math.ceil(T.left);if(cl!==pl&&cl>0&&cl<=3)beep(660,.1);
+ck(fmt(T.left));$("tPh").textContent=T.ph;$("tRd").textContent="Round "+T.rd+" / "+(+$("tN").value||1);$("tPh").style.color=T.ph==="work"?"var(--ok)":"var(--ac)";
+if(T.left<=0){const N=+$("tN").value||1,R=+$("tRs").value||0;beep(1100,.4);
+if(T.ph==="work"&&R>0){T.ph="rest";T.left=R}else if(T.rd<N){T.rd++;T.ph="work";T.left=+$("tW").value||1}
+else{clearInterval(T.iv);T.run=false;tl("Start");$("tPh").textContent="Done";ck("00:00");T.left=0}}},100)};
+tReset();
+/* metronome */
+let M={run:false,tm:null,next:0,beat:0,seq:[],ui:[]};
+const PIT=[400,600,950,750],VB=[60,25,120,25],LB=["Lower","Hold","Lift","Top"];
+const bpm=()=>+$("mS").value;
+function mSet(v){$("mS").value=Math.min(240,Math.max(30,v));$("mB").textContent=$("mS").value;$("bB").textContent="♩ "+$("mS").value}
+$("mS").oninput=()=>mSet(+$("mS").value);$("mUp").onclick=()=>mSet(bpm()+5);$("mDn").onclick=()=>mSet(bpm()-5);
+const ml=t=>{$("mGo").textContent=t;$("bM").textContent=t==="Stop"?"⏹":"▶"};
+function stopM(){M.run=false;clearInterval(M.tm);M.ui.forEach(clearTimeout);M.ui=[];ml("Start");$("mPh").textContent=""}
+$("mMd").onchange=()=>{const t=$("mMd").value==="tempo";if(M.run)stopM();$("mTp").style.display=t?"block":"none";$("mCl").style.display=t?"none":"block";if(t)mSet(60)};
+$("mPr").onchange=()=>{const v=$("mPr").value;if(v==="custom")return;const p=v.split("-");["mE","mP1","mC","mP2"].forEach((id,i)=>$(id).value=p[i])};
+["mE","mP1","mC","mP2"].forEach(id=>$(id).oninput=()=>$("mPr").value="custom");
+function build(){M.seq=[];["mE","mP1","mC","mP2"].forEach((id,k)=>{const n=Math.max(0,parseInt($(id).value)||0);for(let j=0;j<n;j++)M.seq.push({k,j,n,l:LB[k]})});if(!M.seq.length)M.seq=[{k:0,j:0,n:1,l:"Lower"}]}
+function sched(){const a=ac();if(!a)return;const tp=$("mMd").value==="tempo";
+while(M.next<a.currentTime+.15){
+if(tp){const b=M.seq[M.beat%M.seq.length],rep=Math.floor(M.beat/M.seq.length)+1;beep(PIT[b.k],.1,M.next,.5);
+const d=Math.max(0,(M.next-a.currentTime)*1000);if(M.ui.length>40)M.ui.splice(0,20);
+M.ui.push(setTimeout(()=>{$("mPh").textContent=b.l+" "+(b.n-b.j)+" · rep "+rep;try{navigator.vibrate&&navigator.vibrate(b.j===0?VB[b.k]:12)}catch(e){}},d))}
+else{const br=+$("mBr").value;beep(br>0&&M.beat%br===0?1200:800,.05,M.next,.5)}
+M.next+=60/bpm();M.beat++}}
+$("mGo").onclick=()=>{const a=ac();if(M.run){stopM();return}if(!a)return;build();M.run=true;M.beat=0;M.next=a.currentTime+.05;ml("Stop");sched();M.tm=setInterval(sched,25)};
+$("bM").onclick=()=>$("mGo").click();
+/* percent */
+const nv=id=>parseFloat($(id).value);
+function pc(){const a=nv("p1x"),b=nv("p1y");$("p1r").textContent=isNaN(a)||isNaN(b)?"–":r(a*b/100,2);
+const c=nv("p2x"),d=nv("p2y");$("p2r").textContent=isNaN(c)||!d||isNaN(d)?"–":r(c/d*100,2)+"%";
+const e=nv("p3x"),f=nv("p3y");if(isNaN(e)||isNaN(f)||e===0){$("p3r").textContent="–";$("p3d").textContent=""}else{const ch=(f-e)/Math.abs(e)*100;$("p3r").textContent=(ch>0?"+":"")+r(ch,2)+"%";$("p3d").textContent=(ch>0?"Increase":ch<0?"Decrease":"No change")+" of "+r(Math.abs(f-e),2)}}
+["p1x","p1y","p2x","p2y","p3x","p3y"].forEach(i=>$(i).oninput=pc);
+/* iso belt squat */
+function iso(src){
+if(src==="iC"){const c=nv("iC");$("iD").value=isNaN(c)?"":r(c/g(),2)}else if(src==="iD"){const d=nv("iD");$("iC").value=isNaN(d)?"":r(d*g(),1)}
+const A=nv("iA"),B=nv("iB"),D=nv("iD"),out=$("iR");
+if(isNaN(A)||isNaN(B)||isNaN(D)||!A){out.innerHTML="<span class='res'>Enter A, B and a peak force to see E and F.</span>";return}
+const E=D-B,F=E/A;
+out.innerHTML="<div class='res'>E: Net peak force (D − B)</div><div class='big'>"+r(E,1)+" kg</div><div class='res' style='margin-top:8px'>F: Relative strength (E ÷ A)</div><div class='big'>"+r(F,2)+"</div><div class='res'>× body mass · "+r(F*g(),1)+" N/kg</div><div class='note'>Belt + chain (B − A): "+r(B-A,1)+" kg"+(B<A?" (B is lower than A, check inputs)":"")+"</div><button class='btn g' id='iN' style='margin-top:10px'>+ Stamp to note</button>";
+$("iN").onclick=()=>stamp("Iso Belt Squat: "+r(E,1)+" kg net, relative "+r(F,2)+" (A "+A+", B "+B+", D "+r(D,1)+")")}
+["iA","iB","iC","iD"].forEach(i=>$(i).oninput=()=>iso(i));$("cG").addEventListener("change",()=>iso("iD"));
+$("iFg").onclick=()=>{const t=($("iF").value.match(/-?\d+(\.\d+)?/g)||[]).map(Number);if(t.length<2){toast("Paste a trace first");return}const pk=Math.max(...t);if($("iU").value==="N"){$("iC").value=r(pk,1);iso("iC")}else{$("iD").value=r(pk,2);iso("iD")}toast("Peak "+r(pk,1)+" "+$("iU").value)};
+iso();
+if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script></body></html>
